@@ -4,11 +4,13 @@ Detection
 ================
 
 Visualization of Inference Throughputs vs. Validation mAP of COCO pre-trained models is illustrated in the first graph.
-You can hover mouse on circles to reveal details.
+
+.. image:: /_static/plot_help.png
+  :width: 100%
 
 .. include:: /_static/detection_throughputs.html
 
-We also provide a detailed analysis of 80 object categories, you can click on legends to show or hide each model for a cleaner comparison.
+We also provide a detailed interactive analysis of all 80 object categories.
 
 .. include:: /_static/detection_coco_per_class.html
 
@@ -36,7 +38,7 @@ and their performances with more details.
 
   - For SSD [1]_ networks: :download:`Download train_ssd.py<../../scripts/detection/ssd/train_ssd.py>`
   - For Faster-RCNN [2]_ networks: :download:`Download train_faster_rcnn.py<../../scripts/detection/faster_rcnn/train_faster_rcnn.py>`
-  - For YOLO v3 [3]_ networks: :download:`Download train_yolo3_rand_size.py<../../scripts/detection/yolo/train_yolo3_rand_size.py>` or :download:`Download train_yolo3.py<../../scripts/detection/yolo/train_yolo3.py>` with fixed size training, which is faster than random size training pipeline.
+  - For YOLO v3 [3]_ networks: :download:`Download train_yolo3.py<../../scripts/detection/yolo/train_yolo3.py>`
 
 Pascal VOC
 ~~~~~~~~~~
@@ -93,13 +95,17 @@ MS COCO
 +-----------------------------------+-----------------+-----------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------+
 | ssd_512_resnet50_v1_coco          | 30.6/50.0/32.2  | `shell script <https://raw.githubusercontent.com/dmlc/web-data/master/gluoncv/logs/detection/ssd_512_resnet50_v1_coco.sh>`_       | `log <https://raw.githubusercontent.com/dmlc/web-data/master/gluoncv/logs/detection/ssd_512_resnet50_v1_coco_train.log>`_        |
 +-----------------------------------+-----------------+-----------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------+
-| faster_rcnn_resnet50_v1b_coco     | 36.8/57.3/39.6  | `shell script <https://raw.githubusercontent.com/dmlc/web-data/master/gluoncv/logs/detection/faster_rcnn_resnet50_v1b_coco.sh>`_  | `log <https://raw.githubusercontent.com/dmlc/web-data/master/gluoncv/logs/detection/faster_rcnn_resnet50_v1b_coco_train.log>`_   |
+| ssd_512_mobilenet1.0_coco         | 21.7/39.2/21.3  | `shell script <https://raw.githubusercontent.com/dmlc/web-data/master/gluoncv/logs/detection/ssd_512_mobilenet1_0_coco.sh>`_      | `log <https://raw.githubusercontent.com/dmlc/web-data/master/gluoncv/logs/detection/ssd_512_mobilenet1_0_coco_train.log>`_       |
 +-----------------------------------+-----------------+-----------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------+
-| yolo3_darknet53_coco (320x320)    | 31.9/52.7/33.3  | `shell script <https://raw.githubusercontent.com/dmlc/web-data/master/gluoncv/logs/detection/yolo3_darknet53_coco.sh>`_           | `log <https://raw.githubusercontent.com/dmlc/web-data/master/gluoncv/logs/detection/yolo3_darknet53_coco_train.log>`_            |
+| faster_rcnn_resnet50_v1b_coco     | 37.0/57.8/39.6  | `shell script <https://raw.githubusercontent.com/dmlc/web-data/master/gluoncv/logs/detection/faster_rcnn_resnet50_v1b_coco.sh>`_  | `log <https://raw.githubusercontent.com/dmlc/web-data/master/gluoncv/logs/detection/faster_rcnn_resnet50_v1b_coco_train.log>`_   |
 +-----------------------------------+-----------------+-----------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------+
-| yolo3_darknet53_coco (416x416)    | 34.3/55.1/36.7  | `shell script <https://raw.githubusercontent.com/dmlc/web-data/master/gluoncv/logs/detection/yolo3_darknet53_coco.sh>`_           | `log <https://raw.githubusercontent.com/dmlc/web-data/master/gluoncv/logs/detection/yolo3_darknet53_coco_train.log>`_            |
+| faster_rcnn_resnet101_v1d_coco    | 40.1/60.9/43.3  | `shell script <https://raw.githubusercontent.com/dmlc/web-data/master/gluoncv/logs/detection/faster_rcnn_resnet101_v1d_coco.sh>`_ | `log <https://raw.githubusercontent.com/dmlc/web-data/master/gluoncv/logs/detection/faster_rcnn_resnet101_v1d_coco_train.log>`_  |
 +-----------------------------------+-----------------+-----------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------+
-| yolo3_darknet53_coco (608x608)    | 35.6/57.1/38.2  | `shell script <https://raw.githubusercontent.com/dmlc/web-data/master/gluoncv/logs/detection/yolo3_darknet53_coco.sh>`_           | `log <https://raw.githubusercontent.com/dmlc/web-data/master/gluoncv/logs/detection/yolo3_darknet53_coco_train.log>`_            |
+| yolo3_darknet53_coco (320x320)    | 33.6/54.1/35.8  | `shell script <https://raw.githubusercontent.com/dmlc/web-data/master/gluoncv/logs/detection/yolo3_darknet53_coco.sh>`_           | `log <https://raw.githubusercontent.com/dmlc/web-data/master/gluoncv/logs/detection/yolo3_darknet53_coco_train.log>`_            |
++-----------------------------------+-----------------+-----------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------+
+| yolo3_darknet53_coco (416x416)    | 36.0/57.2/38.7  | `shell script <https://raw.githubusercontent.com/dmlc/web-data/master/gluoncv/logs/detection/yolo3_darknet53_coco.sh>`_           | `log <https://raw.githubusercontent.com/dmlc/web-data/master/gluoncv/logs/detection/yolo3_darknet53_coco_train.log>`_            |
++-----------------------------------+-----------------+-----------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------+
+| yolo3_darknet53_coco (608x608)    | 37.0/58.2/40.1  | `shell script <https://raw.githubusercontent.com/dmlc/web-data/master/gluoncv/logs/detection/yolo3_darknet53_coco.sh>`_           | `log <https://raw.githubusercontent.com/dmlc/web-data/master/gluoncv/logs/detection/yolo3_darknet53_coco_train.log>`_            |
 +-----------------------------------+-----------------+-----------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------------------+
 
 
