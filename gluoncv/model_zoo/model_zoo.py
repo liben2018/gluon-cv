@@ -13,6 +13,7 @@ from .cifarresnext import *
 from .cifarwideresnet import *
 from .resnetv1b import *
 from .resnext import *
+from .simple_pose.simple_pose_resnet import *
 from .senet import *
 from .se_resnet import *
 from .yolo import *
@@ -24,6 +25,8 @@ from .resnet import *
 from .squeezenet import *
 from .vgg import *
 from .mobilenet import *
+from .residual_attentionnet import *
+
 
 __all__ = ['get_model', 'get_model_list']
 
@@ -145,17 +148,35 @@ _models = {
     'se_resnext50_32x4d': se_resnext50_32x4d,
     'se_resnext101_32x4d': se_resnext101_32x4d,
     'se_resnext101_64x4d': se_resnext101_64x4d,
-    'senet_52': senet_52,
-    'senet_103': senet_103,
     'senet_154': senet_154,
     'darknet53': darknet53,
     'yolo3_darknet53_coco': yolo3_darknet53_coco,
     'yolo3_darknet53_voc': yolo3_darknet53_voc,
     'yolo3_darknet53_custom': yolo3_darknet53_custom,
+    'yolo3_mobilenet1.0_coco': yolo3_mobilenet1_0_coco,
+    'yolo3_mobilenet1.0_voc': yolo3_mobilenet1_0_voc,
+    'yolo3_mobilenet1.0_custom': yolo3_mobilenet1_0_custom,
     'nasnet_4_1056': nasnet_4_1056,
     'nasnet_5_1538': nasnet_5_1538,
     'nasnet_7_1920': nasnet_7_1920,
     'nasnet_6_4032': nasnet_6_4032,
+    'simple_pose_resnet18_v1b': simple_pose_resnet18_v1b,
+    'simple_pose_resnet50_v1b': simple_pose_resnet50_v1b,
+    'simple_pose_resnet101_v1b': simple_pose_resnet101_v1b,
+    'simple_pose_resnet152_v1b': simple_pose_resnet152_v1b,
+    'simple_pose_resnet50_v1d': simple_pose_resnet50_v1d,
+    'simple_pose_resnet101_v1d': simple_pose_resnet101_v1d,
+    'simple_pose_resnet152_v1d': simple_pose_resnet152_v1d,
+    'residualattentionnet56': residualattentionnet56,
+    'residualattentionnet92': residualattentionnet92,
+    'residualattentionnet128': residualattentionnet128,
+    'residualattentionnet164': residualattentionnet164,
+    'residualattentionnet200': residualattentionnet200,
+    'residualattentionnet236': residualattentionnet236,
+    'residualattentionnet452': residualattentionnet452,
+    'cifar_residualattentionnet56': cifar_residualattentionnet56,
+    'cifar_residualattentionnet92': cifar_residualattentionnet92,
+    'cifar_residualattentionnet452': cifar_residualattentionnet452
     }
 
 def get_model(name, **kwargs):
@@ -165,8 +186,9 @@ def get_model(name, **kwargs):
     ----------
     name : str
         Name of the model.
-    pretrained : bool
-        Whether to load the pretrained weights for model.
+    pretrained : bool or str
+        Boolean value controls whether to load the default pretrained weights for model.
+        String value represents the hashtag for a certain version of pretrained weights.
     classes : int
         Number of classes for the output layer.
     ctx : Context, default CPU
@@ -181,7 +203,9 @@ def get_model(name, **kwargs):
     """
     name = name.lower()
     if name not in _models:
-        raise ValueError('%s' % ('\n\t'.join(sorted(_models.keys()))))
+        err_str = '"%s" is not among the following model list:\n\t' % (name)
+        err_str += '%s' % ('\n\t'.join(sorted(_models.keys())))
+        raise ValueError(err_str)
     net = _models[name](**kwargs)
     return net
 

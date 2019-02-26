@@ -36,7 +36,7 @@ class FasterRCNN(RCNN):
     train_patterns : str, default is None.
         Matching pattern for trainable parameters.
     nms_thresh : float, default is 0.3.
-        Non-maximum suppression threshold. You can speficy < 0 or > 1 to disable NMS.
+        Non-maximum suppression threshold. You can specify < 0 or > 1 to disable NMS.
     nms_topk : int, default is 400
         Apply NMS to top k detection results, use -1 to disable so that every Detection
          result is used in NMS.
@@ -120,7 +120,7 @@ class FasterRCNN(RCNN):
     train_patterns : str
         Matching pattern for trainable parameters.
     nms_thresh : float
-        Non-maximum suppression threshold. You can speficy < 0 or > 1 to disable NMS.
+        Non-maximum suppression threshold. You can specify < 0 or > 1 to disable NMS.
     nms_topk : int
         Apply NMS to top k detection results, use -1 to disable so that every Detection
          result is used in NMS.
@@ -185,7 +185,7 @@ class FasterRCNN(RCNN):
     def hybrid_forward(self, F, x, gt_box=None):
         """Forward Faster-RCNN network.
 
-        The behavior during traing and inference is different.
+        The behavior during training and inference is different.
 
         Parameters
         ----------
@@ -302,8 +302,9 @@ def get_faster_rcnn(name, dataset, pretrained=False, ctx=mx.cpu(),
         Model name.
     dataset : str
         The name of dataset.
-    pretrained : bool, optional, default is False
-        Load pretrained weights.
+    pretrained : bool or str
+        Boolean value controls whether to load the default pretrained weights for model.
+        String value represents the hashtag for a certain version of pretrained weights.
     ctx : mxnet.Context
         Context such as mx.cpu(), mx.gpu(0).
     root : str
@@ -319,7 +320,7 @@ def get_faster_rcnn(name, dataset, pretrained=False, ctx=mx.cpu(),
     if pretrained:
         from ..model_store import get_model_file
         full_name = '_'.join(('faster_rcnn', name, dataset))
-        net.load_parameters(get_model_file(full_name, root=root), ctx=ctx)
+        net.load_parameters(get_model_file(full_name, tag=pretrained, root=root), ctx=ctx)
     return net
 
 def faster_rcnn_resnet50_v1b_voc(pretrained=False, pretrained_base=True, **kwargs):
@@ -329,11 +330,12 @@ def faster_rcnn_resnet50_v1b_voc(pretrained=False, pretrained_base=True, **kwarg
 
     Parameters
     ----------
-    pretrained : bool, optional, default is False
-        Load pretrained weights.
-    pretrained_base : bool, optional, default is True
+    pretrained : bool or str
+        Boolean value controls whether to load the default pretrained weights for model.
+        String value represents the hashtag for a certain version of pretrained weights.
+    pretrained_base : bool or str, optional, default is True
         Load pretrained base network, the extra layers are randomized. Note that
-        if pretrained is `Ture`, this has no effect.
+        if pretrained is `True`, this has no effect.
     ctx : Context, default CPU
         The context in which to load the pretrained weights.
     root : str, default '~/.mxnet/models'
@@ -348,7 +350,8 @@ def faster_rcnn_resnet50_v1b_voc(pretrained=False, pretrained_base=True, **kwarg
     from ...data import VOCDetection
     classes = VOCDetection.CLASSES
     pretrained_base = False if pretrained else pretrained_base
-    base_network = resnet50_v1b(pretrained=pretrained_base, dilated=False, use_global_stats=True)
+    base_network = resnet50_v1b(pretrained=pretrained_base, dilated=False,
+                                use_global_stats=True, **kwargs)
     features = nn.HybridSequential()
     top_features = nn.HybridSequential()
     for layer in ['conv1', 'bn1', 'relu', 'maxpool', 'layer1', 'layer2', 'layer3']:
@@ -376,11 +379,12 @@ def faster_rcnn_resnet50_v1b_coco(pretrained=False, pretrained_base=True, **kwar
 
     Parameters
     ----------
-    pretrained : bool, optional, default is False
-        Load pretrained weights.
-    pretrained_base : bool, optional, default is True
+    pretrained : bool or str
+        Boolean value controls whether to load the default pretrained weights for model.
+        String value represents the hashtag for a certain version of pretrained weights.
+    pretrained_base : bool or str, optional, default is True
         Load pretrained base network, the extra layers are randomized. Note that
-        if pretrained is `Ture`, this has no effect.
+        if pretrained is `True`, this has no effect.
     ctx : Context, default CPU
         The context in which to load the pretrained weights.
     root : str, default '~/.mxnet/models'
@@ -395,7 +399,8 @@ def faster_rcnn_resnet50_v1b_coco(pretrained=False, pretrained_base=True, **kwar
     from ...data import COCODetection
     classes = COCODetection.CLASSES
     pretrained_base = False if pretrained else pretrained_base
-    base_network = resnet50_v1b(pretrained=pretrained_base, dilated=False, use_global_stats=True)
+    base_network = resnet50_v1b(pretrained=pretrained_base, dilated=False,
+                                use_global_stats=True, **kwargs)
     features = nn.HybridSequential()
     top_features = nn.HybridSequential()
     for layer in ['conv1', 'bn1', 'relu', 'maxpool', 'layer1', 'layer2', 'layer3']:
@@ -427,8 +432,12 @@ def faster_rcnn_resnet50_v1b_custom(classes, transfer=None, pretrained_base=True
     transfer : str or None
         If not `None`, will try to reuse pre-trained weights from faster RCNN networks trained
         on other datasets.
-    pretrained_base : boolean
-        Whether fetch and load pretrained weights for base network.
+    pretrained : bool or str
+        Boolean value controls whether to load the default pretrained weights for model.
+        String value represents the hashtag for a certain version of pretrained weights.
+    pretrained_base : bool or str
+        Boolean value controls whether to load the default pretrained weights for model.
+        String value represents the hashtag for a certain version of pretrained weights.
     ctx : Context, default CPU
         The context in which to load the pretrained weights.
     root : str, default '~/.mxnet/models'
@@ -442,7 +451,7 @@ def faster_rcnn_resnet50_v1b_custom(classes, transfer=None, pretrained_base=True
     if transfer is None:
         from ..resnetv1b import resnet50_v1b
         base_network = resnet50_v1b(pretrained=pretrained_base, dilated=False,
-                                    use_global_stats=True)
+                                    use_global_stats=True, **kwargs)
         features = nn.HybridSequential()
         top_features = nn.HybridSequential()
         for layer in ['conv1', 'bn1', 'relu', 'maxpool', 'layer1', 'layer2', 'layer3']:
@@ -478,9 +487,9 @@ def faster_rcnn_resnet101_v1d_voc(pretrained=False, pretrained_base=True, **kwar
     ----------
     pretrained : bool, optional, default is False
         Load pretrained weights.
-    pretrained_base : bool, optional, default is True
+    pretrained_base : bool or str, optional, default is True
         Load pretrained base network, the extra layers are randomized. Note that
-        if pretrained is `Ture`, this has no effect.
+        if pretrained is `True`, this has no effect.
     ctx : Context, default CPU
         The context in which to load the pretrained weights.
     root : str, default '~/.mxnet/models'
@@ -495,7 +504,8 @@ def faster_rcnn_resnet101_v1d_voc(pretrained=False, pretrained_base=True, **kwar
     from ...data import VOCDetection
     classes = VOCDetection.CLASSES
     pretrained_base = False if pretrained else pretrained_base
-    base_network = resnet101_v1d(pretrained=pretrained_base, dilated=False, use_global_stats=True)
+    base_network = resnet101_v1d(pretrained=pretrained_base, dilated=False,
+                                 use_global_stats=True, **kwargs)
     features = nn.HybridSequential()
     top_features = nn.HybridSequential()
     for layer in ['conv1', 'bn1', 'relu', 'maxpool', 'layer1', 'layer2', 'layer3']:
@@ -525,9 +535,9 @@ def faster_rcnn_resnet101_v1d_coco(pretrained=False, pretrained_base=True, **kwa
     ----------
     pretrained : bool, optional, default is False
         Load pretrained weights.
-    pretrained_base : bool, optional, default is True
+    pretrained_base : bool or str, optional, default is True
         Load pretrained base network, the extra layers are randomized. Note that
-        if pretrained is `Ture`, this has no effect.
+        if pretrained is `True`, this has no effect.
     ctx : Context, default CPU
         The context in which to load the pretrained weights.
     root : str, default '~/.mxnet/models'
@@ -542,7 +552,8 @@ def faster_rcnn_resnet101_v1d_coco(pretrained=False, pretrained_base=True, **kwa
     from ...data import COCODetection
     classes = COCODetection.CLASSES
     pretrained_base = False if pretrained else pretrained_base
-    base_network = resnet101_v1d(pretrained=pretrained_base, dilated=False, use_global_stats=True)
+    base_network = resnet101_v1d(pretrained=pretrained_base, dilated=False,
+                                 use_global_stats=True, **kwargs)
     features = nn.HybridSequential()
     top_features = nn.HybridSequential()
     for layer in ['conv1', 'bn1', 'relu', 'maxpool', 'layer1', 'layer2', 'layer3']:
@@ -574,8 +585,9 @@ def faster_rcnn_resnet101_v1d_custom(classes, transfer=None, pretrained_base=Tru
     transfer : str or None
         If not `None`, will try to reuse pre-trained weights from faster RCNN networks trained
         on other datasets.
-    pretrained_base : boolean
-        Whether fetch and load pretrained weights for base network.
+    pretrained_base : bool or str
+        Boolean value controls whether to load the default pretrained weights for model.
+        String value represents the hashtag for a certain version of pretrained weights.
     ctx : Context, default CPU
         The context in which to load the pretrained weights.
     root : str, default '~/.mxnet/models'
@@ -589,7 +601,7 @@ def faster_rcnn_resnet101_v1d_custom(classes, transfer=None, pretrained_base=Tru
     if transfer is None:
         from ..resnetv1b import resnet101_v1d
         base_network = resnet101_v1d(pretrained=pretrained_base, dilated=False,
-                                     use_global_stats=True)
+                                     use_global_stats=True, **kwargs)
         features = nn.HybridSequential()
         top_features = nn.HybridSequential()
         for layer in ['conv1', 'bn1', 'relu', 'maxpool', 'layer1', 'layer2', 'layer3']:
